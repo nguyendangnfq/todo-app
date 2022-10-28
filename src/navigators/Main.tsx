@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home } from '../containers';
+import { DoneTask, Home } from '../containers';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ const MainNavigator = () => {
       />
       <Tab.Screen
         name="Task Done"
-        component={Home}
+        component={DoneTask}
         options={{
           tabBarIconStyle: { display: 'none' },
           tabBarLabelPosition: 'beside-icon',

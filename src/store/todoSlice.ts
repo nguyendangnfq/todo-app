@@ -1,35 +1,66 @@
-import { createSlice } from '@reduxjs/toolkit';
-// import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type TodoState = {
+  id: number;
   title: string;
   description: string | number | Array<string>;
   priority: string;
+  isCompleted: boolean;
 };
 
-const initialState: TodoState[] = [
-  {
-    title: 'Reading',
-    description: 'Read the Harry Potter Book',
-    priority: 'medium',
-  },
-  {
-    title: 'Gaming',
-    description: 'Play Spiderman on PS5 ',
-    priority: 'low',
-  },
-];
+const initialState = {
+  originalState: [
+    {
+      id: 1,
+      title: 'Reading',
+      description: 'Read the Harry Potter Book',
+      priority: 'medium',
+      isCompleted: false,
+    },
+    {
+      id: 2,
+      title: 'Gaming',
+      description: 'Play Spiderman on PS5 ',
+      priority: 'low',
+      isCompleted: false,
+    },
+  ],
+  completedTaskState: [],
+};
 
 const todoSlice = createSlice({
   name: 'todoList',
   initialState,
   reducers: {
     createTask: (state, action) => {
-      state.push(action.payload);
+      state.originalState.push(action.payload);
+    },
+
+    removeTask: (state, action) => {
+      state.originalState = state.originalState.filter(
+        item => item.id !== action.payload,
+      );
+    },
+
+    completedTask: (state, action: PayloadAction<object>) => {
+      state.completedTaskState.push(action.payload);
+    },
+
+    editedTask: (state, action) => {
+      const editedKanban = action.payload;
+
+      const taskIndex = state.originalState.findIndex(
+        item => item.id === editedKanban.id,
+      );
+
+      if (taskIndex >= 0) {
+        state.originalState.splice(taskIndex, 1, editedKanban);
+      }
     },
   },
 });
 
-export const { createTask } = todoSlice.actions;
+export const { createTask, completedTask, removeTask, editedTask } =
+  todoSlice.actions;
 
 export default todoSlice.reducer;

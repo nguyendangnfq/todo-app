@@ -1,13 +1,28 @@
 import React from 'react';
 import { StyleSheet, Button, ScrollView, View } from 'react-native';
 import { theme } from '../theme/variables';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { TodoCard } from '../components';
+import { completedTask, removeTask, TodoState } from '../store/todoSlice';
 
 const Home = (props: any) => {
   const { navigation } = props;
 
-  const data = useAppSelector(state => state.todoList);
+  const data = useAppSelector(state => state.todoList.originalState);
+  const dispatch = useAppDispatch();
+
+  const handleCompletedTask = (value: TodoState) => {
+    const completedValue = {
+      ...value,
+      isCompleted: true,
+    };
+    dispatch(removeTask(completedValue.id));
+    dispatch(completedTask(completedValue));
+  };
+
+  const handleRedirectEditPage = (value: TodoState) => {
+    navigation.navigate('Edit Task', value);
+  };
 
   return (
     <View style={styles.container}>
@@ -15,8 +30,13 @@ const Home = (props: any) => {
         {data
           .slice()
           .reverse()
-          .map((item, index) => (
-            <TodoCard item={item} key={index} />
+          .map(item => (
+            <TodoCard
+              item={item}
+              key={item.id}
+              handleCompletedTask={handleCompletedTask}
+              handleRedirectEditPage={handleRedirectEditPage}
+            />
           ))}
       </ScrollView>
       <View style={styles.button}>

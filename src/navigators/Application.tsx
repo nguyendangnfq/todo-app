@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import MainNavigator from './Main';
 import { navigationRef } from './utils';
-import { AddTask } from '../containers';
+import { AddTask, EditTask } from '../containers';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +23,7 @@ function ApplicationNavigator() {
             }}
           />
           <Stack.Screen name="Add Task" component={AddTask} />
+          <Stack.Screen name="Edit Task" component={EditTask} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

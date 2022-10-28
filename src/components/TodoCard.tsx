@@ -5,9 +5,12 @@ import { TodoState } from '../store/todoSlice';
 
 type TodoCardProps = {
   item: TodoState;
+  handleCompletedTask: (value: TodoState) => void;
+  handleRedirectEditPage: (item: TodoState) => void;
 };
 
-const TodoCard: React.FC<TodoCardProps> = ({ item }) => {
+const TodoCard: React.FC<TodoCardProps> = props => {
+  const { handleCompletedTask, item, handleRedirectEditPage } = props;
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const renderPriority = () => {
@@ -29,7 +32,7 @@ const TodoCard: React.FC<TodoCardProps> = ({ item }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <Pressable style={styles.wrapper}>
       <CheckBox value={isSelected} onValueChange={setIsSelected} />
       <View style={styles.leftContent}>
         <View style={styles.above}>
@@ -38,10 +41,27 @@ const TodoCard: React.FC<TodoCardProps> = ({ item }) => {
         </View>
         <Text style={styles.priority}>{renderPriority()}</Text>
       </View>
-      <Pressable style={styles.doneSection}>
-        {isSelected && <Text style={styles.doneText}>Done</Text>}
+      <Pressable style={styles.editSection}>
+        {isSelected && (
+          <Text
+            style={styles.editText}
+            onPress={() => handleRedirectEditPage(item)}
+          >
+            Edit
+          </Text>
+        )}
       </Pressable>
-    </View>
+      <Pressable style={styles.doneSection}>
+        {isSelected && (
+          <Text
+            style={styles.doneText}
+            onPress={() => handleCompletedTask(item)}
+          >
+            Done
+          </Text>
+        )}
+      </Pressable>
+    </Pressable>
   );
 };
 
@@ -76,11 +96,20 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 12,
   },
+  editSection: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+  },
   doneSection: {
     position: 'absolute',
     right: 20,
     top: 20,
   },
+  editText: {
+    color: '#1D84B5',
+  },
+
   doneText: {
     color: 'green',
   },

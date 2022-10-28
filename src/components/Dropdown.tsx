@@ -1,15 +1,15 @@
 import React from 'react';
-// import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 type DropdownProps = {
   onValueChange: (value: string) => void;
+  value?: string;
 };
 
-const Dropdown: React.FC<DropdownProps> = ({ onValueChange }) => {
+const Dropdown: React.FC<DropdownProps> = ({ onValueChange, value }) => {
   return (
     <RNPickerSelect
-      // style={styles.dropdown}
+      value={value}
       onValueChange={onValueChange}
       items={[
         { label: 'High', value: 'high' },
@@ -21,10 +21,3 @@ const Dropdown: React.FC<DropdownProps> = ({ onValueChange }) => {
 };
 
 export default Dropdown;
-
-// const styles = StyleSheet.create({
-//   dropdown: {
-//     borderWidth: 1,
-//     borderColor: '#000',
-//   },
-// });
