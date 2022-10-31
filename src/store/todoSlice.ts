@@ -33,7 +33,12 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     createTask: (state, action) => {
-      state.originalState.push(action.payload);
+      state.originalState.unshift(action.payload);
+    },
+
+    updateTask: (state, action) => {
+      state.originalState = action.payload;
+      console.log(action.payload);
     },
 
     removeTask: (state, action) => {
@@ -43,7 +48,7 @@ const todoSlice = createSlice({
     },
 
     completedTask: (state, action: PayloadAction<object>) => {
-      state.completedTaskState.push(action.payload);
+      state.completedTaskState.unshift(action.payload);
     },
 
     editedTask: (state, action) => {
@@ -60,7 +65,7 @@ const todoSlice = createSlice({
   },
 });
 
-export const { createTask, completedTask, removeTask, editedTask } =
+export const { createTask, completedTask, removeTask, editedTask, updateTask } =
   todoSlice.actions;
 
 export default todoSlice.reducer;

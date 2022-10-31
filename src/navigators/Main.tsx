@@ -1,28 +1,30 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DoneTask, Home } from '../containers';
+import { TaskDoneIcon, HomeIcon } from '../components/Icons';
+import { theme } from '../theme/variables';
 
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIconStyle: { display: 'none' },
-          tabBarLabelPosition: 'beside-icon',
-        }}
-      />
-      <Tab.Screen
-        name="Task Done"
-        component={DoneTask}
-        options={{
-          tabBarIconStyle: { display: 'none' },
-          tabBarLabelPosition: 'beside-icon',
-        }}
-      />
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarActiveTintColor: theme.colorBlue,
+        tabBarInactiveTintColor: theme.colorGrey,
+        tabBarIcon: ({ color, size }) => {
+          if (route.name === 'Home') {
+            return <HomeIcon color={color} size={size} />;
+          }
+          if (route.name === 'Task Done') {
+            return <TaskDoneIcon color={color} size={size} />;
+          }
+          return null;
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Task Done" component={DoneTask} />
     </Tab.Navigator>
   );
 };

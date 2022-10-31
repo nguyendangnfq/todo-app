@@ -1,14 +1,33 @@
 import React from 'react';
-import { StyleSheet, Button, ScrollView, View } from 'react-native';
+import {
+  StyleSheet,
+  Button,
+  ScrollView,
+  View,
+  LayoutAnimation,
+} from 'react-native';
 import { theme } from '../theme/variables';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { TodoCard } from '../components';
-import { completedTask, removeTask, TodoState } from '../store/todoSlice';
+import {
+  completedTask,
+  removeTask,
+  TodoState,
+  updateTask,
+} from '../store/todoSlice';
+
+import { HomeIcon } from '../components/Icons';
+import {
+  NestableScrollContainer,
+  NestableDraggableFlatList,
+} from 'react-native-draggable-flatlist';
 
 const Home = (props: any) => {
   const { navigation } = props;
 
-  const data = useAppSelector(state => state.todoList.originalState);
+  const data: TodoState[] = useAppSelector(
+    state => state.todoList.originalState,
+  );
   const dispatch = useAppDispatch();
 
   const handleCompletedTask = (value: TodoState) => {
@@ -16,6 +35,7 @@ const Home = (props: any) => {
       ...value,
       isCompleted: true,
     };
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     dispatch(removeTask(completedValue.id));
     dispatch(completedTask(completedValue));
   };
@@ -26,8 +46,8 @@ const Home = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {data
+      <NestableScrollContainer>
+        {/* {data
           .slice()
           .reverse()
           .map(item => (
@@ -37,8 +57,21 @@ const Home = (props: any) => {
               handleCompletedTask={handleCompletedTask}
               handleRedirectEditPage={handleRedirectEditPage}
             />
-          ))}
-      </ScrollView>
+          ))} */}
+        <NestableDraggableFlatList
+          data={data}
+          extraData={data}
+          onDragEnd={({ data }) => dispatch(updateTask(data))}
+          keyExtractor={item => item.id.toString()}
+          renderItem={props => (
+            <TodoCard
+              {...props}
+              handleRedirectEditPage={handleRedirectEditPage}
+              handleCompletedTask={handleCompletedTask}
+            />
+          )}
+        />
+      </NestableScrollContainer>
       <View style={styles.button}>
         <Button
           title="Create a Task"
