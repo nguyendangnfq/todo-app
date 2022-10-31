@@ -47,17 +47,6 @@ const Home = (props: any) => {
   return (
     <View style={styles.container}>
       <NestableScrollContainer>
-        {/* {data
-          .slice()
-          .reverse()
-          .map(item => (
-            <TodoCard
-              item={item}
-              key={item.id}
-              handleCompletedTask={handleCompletedTask}
-              handleRedirectEditPage={handleRedirectEditPage}
-            />
-          ))} */}
         <NestableDraggableFlatList
           data={data}
           extraData={data}
