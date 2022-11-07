@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Button,
-  ScrollView,
-  View,
-  LayoutAnimation,
-} from 'react-native';
+import { StyleSheet, Button, View, LayoutAnimation } from 'react-native';
 import { theme } from '../theme/variables';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { TodoCard } from '../components';
+import { DropDownLang, TodoCard } from '../components';
 import {
   completedTask,
   removeTask,
@@ -16,14 +10,14 @@ import {
   updateTask,
 } from '../store/todoSlice';
 
-import { HomeIcon } from '../components/Icons';
+import { useNavigation } from '@react-navigation/native';
 import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
 
-const Home = (props: any) => {
-  const { navigation } = props;
+const Home: React.FC = () => {
+  const navigation = useNavigation();
 
   const data: TodoState[] = useAppSelector(
     state => state.todoList.originalState,
@@ -41,23 +35,14 @@ const Home = (props: any) => {
   };
 
   const handleRedirectEditPage = (value: TodoState) => {
-    navigation.navigate('Edit Task', value);
+    // navigation.navigate('EditTask', value);
+    console.log(value);
   };
 
   return (
     <View style={styles.container}>
+      <DropDownLang />
       <NestableScrollContainer>
-        {/* {data
-          .slice()
-          .reverse()
-          .map(item => (
-            <TodoCard
-              item={item}
-              key={item.id}
-              handleCompletedTask={handleCompletedTask}
-              handleRedirectEditPage={handleRedirectEditPage}
-            />
-          ))} */}
         <NestableDraggableFlatList
           data={data}
           extraData={data}
@@ -75,7 +60,10 @@ const Home = (props: any) => {
       <View style={styles.button}>
         <Button
           title="Create a Task"
-          onPress={() => navigation.navigate('Add Task')}
+          onPress={() => {
+            // navigation.navigate('AddTask');
+            console.log(navigation.navigate);
+          }}
         />
       </View>
     </View>

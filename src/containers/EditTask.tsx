@@ -3,17 +3,18 @@ import { View, StyleSheet, Button } from 'react-native';
 import { Dropdown, TextInputCustom } from '../components';
 import { useAppDispatch } from '../store/hooks';
 import { editedTask, TodoState } from '../store/todoSlice';
+import { useNavigation } from '@react-navigation/native';
 
 type EditTaskProps = {
   route: any;
-  navigation: any;
 };
 
-const EditTask: React.FC<EditTaskProps> = ({ route, navigation }) => {
+const EditTask: React.FC<EditTaskProps> = ({ route }) => {
   const data = route.params;
   const [title, setTitle] = useState<string>(data.title);
   const [description, setDescription] = useState<string>(data.description);
   const [priority, setPriority] = useState<string>(data.priority);
+  const navigation = useNavigation();
 
   const dispatch = useAppDispatch();
 

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import todoReducer from './todoSlice';
+import langReducer from './langSlice';
 
 export const store = configureStore({
   reducer: {
     todoList: todoReducer,
+    changeLanguage: langReducer,
   },
 });
 
