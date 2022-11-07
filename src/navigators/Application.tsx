@@ -5,10 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import MainNavigator from './Main';
 import { navigationRef } from './utils';
 import { AddTask, EditTask } from '../containers';
+import { setI18nConfig } from '../translations';
 
 const Stack = createStackNavigator();
 
 function ApplicationNavigator() {
+  setI18nConfig();
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />

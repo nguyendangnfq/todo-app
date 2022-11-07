@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Button,
-  ScrollView,
-  View,
-  LayoutAnimation,
-} from 'react-native';
+import { StyleSheet, Button, View, LayoutAnimation } from 'react-native';
 import { theme } from '../theme/variables';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { TodoCard } from '../components';
@@ -16,14 +10,14 @@ import {
   updateTask,
 } from '../store/todoSlice';
 
-import { HomeIcon } from '../components/Icons';
 import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = (props: any) => {
-  const { navigation } = props;
+const Home: React.FC = (props: any) => {
+  const navigation = useNavigation();
 
   const data: TodoState[] = useAppSelector(
     state => state.todoList.originalState,

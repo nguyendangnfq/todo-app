@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DoneTask, Home } from '../containers';
 import { TaskDoneIcon, HomeIcon } from '../components/Icons';
 import { theme } from '../theme/variables';
+import { translate } from '../translations';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,11 @@ const MainNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{ tabBarLabel: translate('home', '') }}
+      />
       <Tab.Screen name="Task Done" component={DoneTask} />
     </Tab.Navigator>
   );
