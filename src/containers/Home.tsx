@@ -40,8 +40,8 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <DropDownLang />
       <NestableScrollContainer>
+        <DropDownLang />
         <NestableDraggableFlatList
           data={data}
           extraData={data}

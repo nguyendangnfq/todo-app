@@ -5,7 +5,7 @@ import langReducer from './langSlice';
 export const store = configureStore({
   reducer: {
     todoList: todoReducer,
-    changeLanguage: langReducer,
+    language: langReducer,
   },
 });
 

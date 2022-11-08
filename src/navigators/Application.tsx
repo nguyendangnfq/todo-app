@@ -6,13 +6,17 @@ import MainNavigator from './Main';
 import { navigationRef } from './utils';
 import { AddTask, EditTask } from '../containers';
 import { setI18nConfig } from '../translations';
+import { useAppSelector } from '../store/hooks';
+import { RootState } from '../store';
 
 const Stack = createStackNavigator();
 
 function ApplicationNavigator() {
-  setI18nConfig();
+  const lang = useAppSelector((state: RootState) => state.language.currentLang);
+
+  setI18nConfig(lang);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} key={lang}>
       <StatusBar />
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
