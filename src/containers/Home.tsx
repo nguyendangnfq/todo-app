@@ -35,8 +35,7 @@ const Home: React.FC = () => {
   };
 
   const handleRedirectEditPage = (value: TodoState) => {
-    // navigation.navigate('EditTask', value);
-    console.log(value);
+    navigation.navigate('EditTask', value);
   };
 
   return (
@@ -61,8 +60,7 @@ const Home: React.FC = () => {
         <Button
           title="Create a Task"
           onPress={() => {
-            // navigation.navigate('AddTask');
-            console.log(navigation.navigate);
+            return navigation.navigate('AddTask');
           }}
         />
       </View>

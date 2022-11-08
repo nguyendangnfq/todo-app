@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Reanimated from 'react-native-reanimated';
 import { TodoState } from '../store/todoSlice';
-import { ScaleDecorator } from 'react-native-draggable-flatlist';
 
 type TodoCardProps = {
   item: TodoState;
@@ -28,17 +27,18 @@ const TodoCard: React.FC<TodoCardProps> = props => {
     let priority;
 
     switch (item.priority) {
-      case 'high':
+      case 'High':
         priority = 'High';
         break;
-      case 'medium':
+      case 'Medium':
         priority = 'Medium';
         break;
-      case 'low':
+      case 'Low':
         priority = 'Low';
         break;
       default:
     }
+
     return priority;
   };
 
@@ -54,11 +54,13 @@ const TodoCard: React.FC<TodoCardProps> = props => {
           <Text
             style={[
               styles.priority,
-              item.priority === 'high'
+              item.priority === 'High'
                 ? styles.priorityHigh
-                : item.priority === 'medium'
+                : item.priority === 'Medium'
                 ? styles.priorityMedium
-                : styles.priorityLow,
+                : item.priority === 'Low'
+                ? styles.priorityLow
+                : null,
             ]}
           >
             {renderPriority()}
