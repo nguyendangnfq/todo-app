@@ -1,20 +1,21 @@
-import React from 'react';
-import { StyleSheet, Button, View, LayoutAnimation } from 'react-native';
-import { theme } from '../theme/variables';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import React, { useEffect } from 'react';
+import { Button, LayoutAnimation, StyleSheet, View } from 'react-native';
 import { DropDownLang, TodoCard } from '../components';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
   completedTask,
+  fetchToDoList,
   removeTask,
   TodoState,
   updateTask,
 } from '../store/todoSlice';
+import { theme } from '../theme/variables';
 
-import {
-  NestableScrollContainer,
-  NestableDraggableFlatList,
-} from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
+import {
+  NestableDraggableFlatList,
+  NestableScrollContainer,
+} from 'react-native-draggable-flatlist';
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
@@ -23,6 +24,11 @@ const Home: React.FC = () => {
     state => state.todoList.originalState,
   );
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchToDoList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleCompletedTask = (value: TodoState) => {
     const completedValue = {
@@ -46,7 +52,7 @@ const Home: React.FC = () => {
           data={data}
           extraData={data}
           onDragEnd={({ data }) => dispatch(updateTask(data))}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item?.id?.toString()}
           renderItem={props => (
             <TodoCard
               {...props}

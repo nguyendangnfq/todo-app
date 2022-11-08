@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { get, ref } from 'firebase/database';
+import { db } from '../../firebase-config.js';
 
 export type TodoState = {
   id: number;
@@ -8,23 +10,25 @@ export type TodoState = {
   isCompleted: boolean;
 };
 
+export type inittialTypeState = {
+  loading: boolean;
+  originalState: TodoState[];
+  completedTaskState: TodoState[];
+};
+
+export const fetchToDoList = createAsyncThunk('todo/fetchAllTodo', async () => {
+  try {
+    const res = (await get(ref(db, '/todo'))).val();
+    // const todos = Object.keys(data).map(key => data[key]);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+});
+
 const initialState = {
-  originalState: [
-    {
-      id: 1,
-      title: 'Reading',
-      description: 'Read the Harry Potter Book',
-      priority: 'Medium',
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: 'Gaming',
-      description: 'Play Spiderman on PS5 ',
-      priority: 'Low',
-      isCompleted: false,
-    },
-  ],
+  loading: false,
+  originalState: [],
   completedTaskState: [],
 };
 
@@ -61,6 +65,24 @@ const todoSlice = createSlice({
         state.originalState.splice(taskIndex, 1, editedKanban);
       }
     },
+  },
+
+  extraReducers: builder => {
+    builder
+      .addCase(fetchToDoList.pending, state => {
+        state.loading = true;
+      })
+      .addCase(fetchToDoList.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(fetchToDoList.fulfilled, (state, action) => {
+        let fetchData = action.payload;
+        let emptyArray: TodoState[] = [];
+        fetchData.forEach((item: any) => {
+          emptyArray.push(item);
+        });
+        state.originalState = emptyArray;
+      });
   },
 });
 
