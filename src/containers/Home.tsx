@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Button, View, LayoutAnimation } from 'react-native';
 import { theme } from '../theme/variables';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { TodoCard } from '../components';
+import { DropDownLang, TodoCard } from '../components';
 import {
   completedTask,
   removeTask,
@@ -16,7 +16,7 @@ import {
 } from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 
-const Home: React.FC = (props: any) => {
+const Home: React.FC = () => {
   const navigation = useNavigation();
 
   const data: TodoState[] = useAppSelector(
@@ -35,12 +35,13 @@ const Home: React.FC = (props: any) => {
   };
 
   const handleRedirectEditPage = (value: TodoState) => {
-    navigation.navigate('Edit Task', value);
+    navigation.navigate('EditTask', value);
   };
 
   return (
     <View style={styles.container}>
       <NestableScrollContainer>
+        <DropDownLang />
         <NestableDraggableFlatList
           data={data}
           extraData={data}
@@ -58,7 +59,9 @@ const Home: React.FC = (props: any) => {
       <View style={styles.button}>
         <Button
           title="Create a Task"
-          onPress={() => navigation.navigate('Add Task')}
+          onPress={() => {
+            return navigation.navigate('AddTask');
+          }}
         />
       </View>
     </View>

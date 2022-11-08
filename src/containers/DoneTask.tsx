@@ -4,9 +4,7 @@ import { TodoCard } from '../components';
 import { useAppSelector } from '../store/hooks';
 import { theme } from '../theme/variables';
 
-type DoneTaskProps = {};
-
-const DoneTask: React.FC<DoneTaskProps> = () => {
+const DoneTask: React.FC = () => {
   const data = useAppSelector(state => state.todoList.completedTaskState);
 
   return (

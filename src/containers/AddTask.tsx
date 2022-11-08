@@ -3,15 +3,14 @@ import { View, StyleSheet, Button } from 'react-native';
 import { Dropdown, TextInputCustom } from '../components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { createTask, TodoState } from '../store/todoSlice';
+import { useNavigation } from '@react-navigation/native';
 
-type AddTaskProps = {
-  navigation: any;
-};
-
-const AddTask: React.FC<AddTaskProps> = ({ navigation }) => {
+const AddTask: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
+
+  const navigation = useNavigation();
 
   const data = useAppSelector(state => state.todoList.originalState);
   const dispatch = useAppDispatch();

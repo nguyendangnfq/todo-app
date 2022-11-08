@@ -1,19 +1,20 @@
 import React from 'react';
+import i18n from 'i18n-js';
+import { changeLanguage } from '../store/langSlice';
+import { useAppDispatch } from '../store/hooks';
 import SelectDropdown from 'react-native-select-dropdown';
 
-type DropdownProps = {
-  onValueChange: (value: string) => void;
-  value?: string;
-};
-
-const priorityData = ['High', 'Medium', 'Low'];
-
-const Dropdown: React.FC<DropdownProps> = ({ onValueChange, value }) => {
+const DropDownLang = () => {
+  const dispatch = useAppDispatch();
+  const handleChangeLanguages = (val: string) => {
+    dispatch(changeLanguage(val));
+  };
   return (
     <SelectDropdown
-      data={priorityData}
-      onSelect={onValueChange}
-      defaultValue={value}
+      dropdownStyle={{ marginBottom: 5 }}
+      data={['en', 'vi']}
+      onSelect={handleChangeLanguages}
+      defaultValue={i18n.locale}
       buttonTextAfterSelection={selectedItem => {
         // text represented after item is selected
         // if data array is an array of objects then return selectedItem.property to render after item is selected
@@ -28,4 +29,4 @@ const Dropdown: React.FC<DropdownProps> = ({ onValueChange, value }) => {
   );
 };
 
-export default Dropdown;
+export default DropDownLang;

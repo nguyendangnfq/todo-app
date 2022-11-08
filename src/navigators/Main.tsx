@@ -29,7 +29,11 @@ const MainNavigator = () => {
         component={Home}
         options={{ tabBarLabel: translate('home', '') }}
       />
-      <Tab.Screen name="Task Done" component={DoneTask} />
+      <Tab.Screen
+        name="Task Done"
+        component={DoneTask}
+        options={{ tabBarLabel: translate('task-done', '') }}
+      />
     </Tab.Navigator>
   );
 };
