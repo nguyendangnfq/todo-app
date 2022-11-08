@@ -25,8 +25,8 @@ function ApplicationNavigator() {
               headerShown: false,
             }}
           />
-          <Stack.Screen name="Add Task" component={AddTask} />
-          <Stack.Screen name="Edit Task" component={EditTask} />
+          <Stack.Screen name="AddTask" component={AddTask} />
+          <Stack.Screen name="EditTask" component={EditTask} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

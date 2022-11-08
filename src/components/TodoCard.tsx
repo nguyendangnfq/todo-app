@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Reanimated from 'react-native-reanimated';
 import { TodoState } from '../store/todoSlice';
-import { ScaleDecorator } from 'react-native-draggable-flatlist';
 
 type TodoCardProps = {
   item: TodoState;
@@ -28,70 +27,67 @@ const TodoCard: React.FC<TodoCardProps> = props => {
     let priority;
 
     switch (item.priority) {
-      case 'high':
+      case 'High':
         priority = 'High';
         break;
-      case 'medium':
+      case 'Medium':
         priority = 'Medium';
         break;
-      case 'low':
+      case 'Low':
         priority = 'Low';
         break;
       default:
     }
+
     return priority;
   };
 
   return (
-    <ScaleDecorator>
-      <TouchableOpacity
-        activeOpacity={1}
-        onLongPress={drag}
-        disabled={isActive}
-      >
-        <Reanimated.View style={styles.wrapper}>
-          <CheckBox value={isSelected} onValueChange={setIsSelected} />
-          <View style={styles.leftContent}>
-            <View style={styles.above}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.description}>{item.description}</Text>
-            </View>
-            <Text
-              style={[
-                styles.priority,
-                item.priority === 'high'
-                  ? styles.priorityHigh
-                  : item.priority === 'medium'
-                  ? styles.priorityMedium
-                  : styles.priorityLow,
-              ]}
-            >
-              {renderPriority()}
-            </Text>
+    <TouchableOpacity activeOpacity={1} onLongPress={drag} disabled={isActive}>
+      <Reanimated.View style={styles.wrapper}>
+        <CheckBox value={isSelected} onValueChange={setIsSelected} />
+        <View style={styles.leftContent}>
+          <View style={styles.above}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.description}>{item.description}</Text>
           </View>
-          <Pressable style={styles.editSection}>
-            {isSelected && (
-              <Text
-                style={styles.editText}
-                onPress={() => handleRedirectEditPage(item)}
-              >
-                Edit
-              </Text>
-            )}
-          </Pressable>
-          <Pressable style={styles.doneSection}>
-            {isSelected && (
-              <Text
-                style={styles.doneText}
-                onPress={() => handleCompletedTask(item)}
-              >
-                Done
-              </Text>
-            )}
-          </Pressable>
-        </Reanimated.View>
-      </TouchableOpacity>
-    </ScaleDecorator>
+          <Text
+            style={[
+              styles.priority,
+              item.priority === 'High'
+                ? styles.priorityHigh
+                : item.priority === 'Medium'
+                ? styles.priorityMedium
+                : item.priority === 'Low'
+                ? styles.priorityLow
+                : null,
+            ]}
+          >
+            {renderPriority()}
+          </Text>
+        </View>
+        <Pressable style={styles.editSection}>
+          {isSelected && (
+            <Text
+              style={styles.editText}
+              onPress={() => handleRedirectEditPage(item)}
+            >
+              Edit
+            </Text>
+          )}
+        </Pressable>
+        <Pressable style={styles.doneSection}>
+          {isSelected && (
+            <Text
+              style={styles.doneText}
+              onPress={() => handleCompletedTask(item)}
+            >
+              Done
+            </Text>
+          )}
+        </Pressable>
+      </Reanimated.View>
+    </TouchableOpacity>
   );
 };
 

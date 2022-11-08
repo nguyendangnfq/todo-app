@@ -3,7 +3,6 @@ import { View, StyleSheet, Button } from 'react-native';
 import { Dropdown, TextInputCustom } from '../components';
 import { useAppDispatch } from '../store/hooks';
 import { editedTask, TodoState } from '../store/todoSlice';
-
 type EditTaskProps = {
   route: any;
   navigation: any;
