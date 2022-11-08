@@ -38,7 +38,6 @@ const todoSlice = createSlice({
 
     updateTask: (state, action) => {
       state.originalState = action.payload;
-      console.log(action.payload);
     },
 
     removeTask: (state, action) => {
