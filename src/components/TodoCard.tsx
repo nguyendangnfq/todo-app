@@ -14,13 +14,10 @@ type TodoCardProps = {
   item: TodoState;
   handleCompletedTask: (value: TodoState) => void;
   handleRedirectEditPage: (item: TodoState) => void;
-  drag: any;
-  isActive: any;
 };
 
 const TodoCard: React.FC<TodoCardProps> = props => {
-  const { handleCompletedTask, item, handleRedirectEditPage, drag, isActive } =
-    props;
+  const { handleCompletedTask, item, handleRedirectEditPage } = props;
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const renderPriority = () => {
@@ -43,7 +40,7 @@ const TodoCard: React.FC<TodoCardProps> = props => {
   };
 
   return (
-    <TouchableOpacity activeOpacity={1} onLongPress={drag} disabled={isActive}>
+    <TouchableOpacity activeOpacity={1}>
       <Reanimated.View style={styles.wrapper}>
         <CheckBox value={isSelected} onValueChange={setIsSelected} />
         <View style={styles.leftContent}>
