@@ -3,23 +3,15 @@ import {
   Button,
   LayoutAnimation,
   StyleSheet,
-  View,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import { DropDownLang, TodoCard } from '../components';
+import { TodoCard } from '../components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import {
-  completedTask,
-  fetchToDoList,
-  removeTask,
-  TodoState,
-  updateTask,
-} from '../store/todoSlice';
+import { fetchToDoList, removeTodo, TodoState } from '../store/todoSlice';
 import { theme } from '../theme/variables';
 
 import { useNavigation } from '@react-navigation/native';
-import { get, ref } from 'firebase/database';
-import { db } from '../../firebase-config';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
@@ -32,16 +24,8 @@ const Home: React.FC = () => {
   );
   const dispatch = useAppDispatch();
 
-  console.log('render');
-
   useEffect(() => {
     dispatch(fetchToDoList());
-    // const fetch = async () => {
-    //   const res = await (await get(ref(db, '/todo'))).val();
-    //   const todos = Object.keys(res).map(key => res[key]);
-    //   console.log(todos);
-    // };
-    // fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -51,8 +35,9 @@ const Home: React.FC = () => {
       isCompleted: true,
     };
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    dispatch(removeTask(completedValue.id));
-    dispatch(completedTask(completedValue));
+    // dispatch(removeTask(completedValue.id));
+    // dispatch(completedTask(completedValue));
+    dispatch(removeTodo(completedValue.id));
   };
 
   const handleRedirectEditPage = (value: TodoState) => {
@@ -76,7 +61,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <DropDownLang />
+      {/* <DropDownLang /> */}
       <DraggableFlatList
         style={[
           {
@@ -91,7 +76,7 @@ const Home: React.FC = () => {
         }}
         data={data}
         onDragEnd={({ data }) => {}}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id?.toString()}
         renderItem={renderTodoItem}
       />
 

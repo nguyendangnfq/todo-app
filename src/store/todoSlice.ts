@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { get, ref } from 'firebase/database';
+import { get, ref, update, remove, set } from 'firebase/database';
 import { db } from '../../firebase-config.js';
 
 export type TodoState = {
@@ -26,6 +26,34 @@ export const fetchToDoList = createAsyncThunk('todo/fetchAllTodo', async () => {
     throw error;
   }
 });
+
+export const addTodoList = createAsyncThunk(
+  'todo/addTodo',
+  async (newValue: TodoState) => {
+    const addValue = {
+      ...newValue,
+    };
+
+    await set(ref(db, '/todo/' + newValue.id), addValue);
+    return addValue;
+  },
+);
+
+export const removeTodo = createAsyncThunk(
+  'todo/removeTodo',
+  async (id: number) => {
+    await remove(ref(db, `/todo/${id}`));
+    return { data: 'success' };
+  },
+);
+
+export const updateTodo = createAsyncThunk(
+  'todo/updateTodo',
+  async ({ id, data }: any) => {
+    await update(ref(db, `/todo/${id}`), { ...data });
+    return { id, data };
+  },
+);
 
 const initialState = {
   loading: false,
@@ -72,16 +100,58 @@ const todoSlice = createSlice({
     builder
       .addCase(fetchToDoList.pending, state => {
         state.loading = true;
-        console.log('pending');
       })
       .addCase(fetchToDoList.rejected, state => {
-        console.log('rejected');
         state.loading = false;
       })
       .addCase(fetchToDoList.fulfilled, (state, action) => {
-        console.log('fullfilled');
         let fetchData = action.payload;
         state.originalState = fetchData;
+      })
+
+      .addCase(addTodoList.pending, state => {
+        state.loading = true;
+      })
+      .addCase(addTodoList.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(addTodoList.fulfilled, (state, action) => {
+        state.originalState.unshift(action.payload);
+        state.loading = false;
+      })
+
+      .addCase(removeTodo.pending, state => {
+        state.loading = true;
+      })
+
+      .addCase(removeTodo.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(removeTodo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.originalState = state.originalState.filter(
+          item => item.id !== action.payload,
+        );
+      })
+
+      .addCase(updateTodo.pending, state => {
+        state.loading = true;
+      })
+      .addCase(updateTodo.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(updateTodo.fulfilled, (state, { payload }) => {
+        state.loading = false;
+
+        const editedKanban = payload.data;
+
+        const taskIndex = state.originalState.findIndex(
+          item => item.id === editedKanban.id,
+        );
+
+        if (taskIndex >= 0) {
+          state.originalState.splice(taskIndex, 1, editedKanban);
+        }
       });
   },
 });

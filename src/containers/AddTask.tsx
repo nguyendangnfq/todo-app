@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { Dropdown, TextInputCustom } from '../components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { createTask, TodoState } from '../store/todoSlice';
-import { useNavigation } from '@react-navigation/native';
+import { addTodoList, TodoState } from '../store/todoSlice';
 
 const AddTask: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -27,7 +27,8 @@ const AddTask: React.FC = () => {
       priority: priority,
       isCompleted: false,
     };
-    dispatch(createTask(newValue));
+    // dispatch(createTask(newValue));
+    dispatch(addTodoList(newValue));
     navigation.goBack();
   };
   return (

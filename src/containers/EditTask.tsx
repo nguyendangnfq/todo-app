@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { Dropdown, TextInputCustom } from '../components';
 import { useAppDispatch } from '../store/hooks';
-import { editedTask, TodoState } from '../store/todoSlice';
-import { useNavigation } from '@react-navigation/native';
+import { TodoState, updateTodo } from '../store/todoSlice';
 
 type EditTaskProps = {
   route: any;
@@ -22,8 +22,6 @@ const EditTask: React.FC<EditTaskProps> = ({ route }) => {
     setPriority(value);
   };
 
-  console.log(data);
-
   const handleEditTask = () => {
     const editedValue: TodoState = {
       ...data,
@@ -32,7 +30,7 @@ const EditTask: React.FC<EditTaskProps> = ({ route }) => {
       priority: priority,
     };
 
-    dispatch(editedTask(editedValue));
+    dispatch(updateTodo({ id: editedValue.id, data: editedValue }));
     navigation.goBack();
   };
   return (
