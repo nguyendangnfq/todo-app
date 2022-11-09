@@ -18,11 +18,11 @@ export type inittialTypeState = {
 
 export const fetchToDoList = createAsyncThunk('todo/fetchAllTodo', async () => {
   try {
-    const res = await (await get(ref(db, '/todo'))).val();
-    const todos = Object.keys(res).map(key => res[key]);
-    console.log(todos);
-    return res;
+    const snapshot = (await (await get(ref(db, '/todo'))).val()) || {};
+    const todos = Object.keys(snapshot).map(key => snapshot[key]);
+    return todos;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 });
@@ -72,18 +72,16 @@ const todoSlice = createSlice({
     builder
       .addCase(fetchToDoList.pending, state => {
         state.loading = true;
+        console.log('pending');
       })
       .addCase(fetchToDoList.rejected, state => {
+        console.log('rejected');
         state.loading = false;
       })
       .addCase(fetchToDoList.fulfilled, (state, action) => {
-        console.log(action.payload);
+        console.log('fullfilled');
         let fetchData = action.payload;
-        let emptyArray: TodoState[] = [];
-        fetchData.forEach((item: any) => {
-          emptyArray.push(item);
-        });
-        state.originalState = emptyArray;
+        state.originalState = fetchData;
       });
   },
 });

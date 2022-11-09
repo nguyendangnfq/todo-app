@@ -1,5 +1,11 @@
-import React, { useEffect } from 'react';
-import { Button, LayoutAnimation, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import {
+  Button,
+  LayoutAnimation,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { DropDownLang, TodoCard } from '../components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
@@ -14,9 +20,8 @@ import { theme } from '../theme/variables';
 import { useNavigation } from '@react-navigation/native';
 import { get, ref } from 'firebase/database';
 import { db } from '../../firebase-config';
-import {
-  NestableDraggableFlatList,
-  NestableScrollContainer,
+import DraggableFlatList, {
+  RenderItemParams,
 } from 'react-native-draggable-flatlist';
 
 const Home: React.FC = () => {
@@ -26,6 +31,8 @@ const Home: React.FC = () => {
     state => state.todoList.originalState,
   );
   const dispatch = useAppDispatch();
+
+  console.log('render');
 
   useEffect(() => {
     dispatch(fetchToDoList());
@@ -52,24 +59,42 @@ const Home: React.FC = () => {
     navigation.navigate('EditTask', value);
   };
 
+  const renderTodoItem = useCallback(
+    ({ item, drag }: RenderItemParams<any>) => (
+      <View>
+        <TouchableOpacity onLongPress={drag}>
+          <TodoCard
+            item={item}
+            handleRedirectEditPage={handleRedirectEditPage}
+            handleCompletedTask={handleCompletedTask}
+          />
+        </TouchableOpacity>
+      </View>
+    ),
+    [data],
+  );
+
   return (
     <View style={styles.container}>
-      <NestableScrollContainer>
-        <DropDownLang />
-        <NestableDraggableFlatList
-          data={data}
-          extraData={data}
-          onDragEnd={({ data }) => dispatch(updateTask(data))}
-          keyExtractor={item => item?.id?.toString()}
-          renderItem={props => (
-            <TodoCard
-              {...props}
-              handleRedirectEditPage={handleRedirectEditPage}
-              handleCompletedTask={handleCompletedTask}
-            />
-          )}
-        />
-      </NestableScrollContainer>
+      <DropDownLang />
+      <DraggableFlatList
+        style={[
+          {
+            flex: 1,
+          },
+        ]}
+        containerStyle={{
+          flex: 1,
+        }}
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        data={data}
+        onDragEnd={({ data }) => {}}
+        keyExtractor={item => item.id}
+        renderItem={renderTodoItem}
+      />
+
       <View style={styles.button}>
         <Button
           title="Create a Task"
