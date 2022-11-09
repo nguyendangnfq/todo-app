@@ -12,6 +12,8 @@ import {
 import { theme } from '../theme/variables';
 
 import { useNavigation } from '@react-navigation/native';
+import { get, ref } from 'firebase/database';
+import { db } from '../../firebase-config';
 import {
   NestableDraggableFlatList,
   NestableScrollContainer,
@@ -27,6 +29,12 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchToDoList());
+    // const fetch = async () => {
+    //   const res = await (await get(ref(db, '/todo'))).val();
+    //   const todos = Object.keys(res).map(key => res[key]);
+    //   console.log(todos);
+    // };
+    // fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
